@@ -1,17 +1,48 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import java.util.Arrays;
+import java.util.List;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
-        }
+public class Main {
+    public static void main(String[] args) {
+
+        // 1. Inicjalizacja bazy asortymentu
+        List<Supplement> initialInventory = Arrays.asList(
+                new Supplement("Whey Protein 100", "Białko", 89.99),
+                new Supplement("Creatine Monohydrate", "Kreatyna", 39.99),
+                new Supplement("WPC 80", "Białko", 75.50),
+                new Supplement("Pre-Workout X", "Przedtreningówka", 120.00),
+                new Supplement("Ashwagandha", "Witaminy", 29.99)
+        );
+
+        List<Supplement> soldItems = Arrays.asList(
+                new Supplement("Whey Protein 100", "Białko", 89.99),
+                new Supplement("Creatine Monohydrate", "Kreatyna", 39.99),
+                new Supplement("WPC 80", "Białko", 75.50),
+                new Supplement("Pre-Workout X", "Przedtreningówka", 120.00),
+                new Supplement("Ashwagandha", "Witaminy", 29.99),
+                new Supplement("Whey Protein 100", "Białko", 89.99),
+                new Supplement("Whey Protein 100", "Białko", 89.99),
+                new Supplement("Pre-Workout X", "Przedtreningówka", 120.00)
+        );
+
+
+        SupplementStore store = new SupplementStore(initialInventory);
+        String supplementsFile = "suplementy.txt";
+
+        System.out.println("\n--- 1. Wyszukanie elementów przez filtrowanie ---");
+        store.printSupplementsByCategory("Białko");
+
+        System.out.println("\n--- 2. Zliczanie przedmiotów ---");
+        store.countSameItems(soldItems);
+
+        System.out.println("\n--- 3. Mapowanie strumienia ---");
+        store.printAllNamesMapped();
+
+        System.out.println("\n--- 4. Zapis danych do pliku ---");
+        store.saveInventoryToFile(supplementsFile);
+
+        System.out.println("\n--- 5. Filtrowanie i sortowanie danych z pliku ---");
+        store.readAndProcessFromFile(supplementsFile, "Białko");
     }
 }
