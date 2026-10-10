@@ -1,0 +1,14 @@
+package org.example.dto;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
+
+@RequiredArgsConstructor
+@Accessors(fluent = true)
+@Getter
+public class SupplementDTO {
+    private final @NonNull String name;
+    private final @NonNull String category;
+    private final double price;
+}

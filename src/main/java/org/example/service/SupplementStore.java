@@ -1,4 +1,6 @@
-package org.example;
+package org.example.service;
+import org.example.model.Supplement;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
