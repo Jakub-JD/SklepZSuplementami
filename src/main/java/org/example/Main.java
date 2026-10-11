@@ -2,6 +2,9 @@ package org.example;
 
 import org.example.model.Supplement;
 import org.example.service.SupplementStore;
+import org.example.model.Supplier;
+import org.example.service.XmlManager;
+import org.example.exception.InvalidModelDataException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,8 +14,8 @@ import org.example.dto.*;
 public class Main {
     public static void main(String[] args) {
         //lab1();
-
-        lab3();
+//        lab2();
+        //lab3();
 
     }
     public static void lab1(){
@@ -54,6 +57,48 @@ public class Main {
 
         System.out.println("\n--- 5. Filtrowanie i sortowanie danych z pliku ---");
         store.readAndProcessFromFile(supplementsFile, "Białko");
+    }
+
+    public static void lab2() {
+        System.out.println("\n--- ZADANIE 1 i 2: Zapis i odczyt danych z XML z walidacją wyjątkami ---");
+
+        List<Supplier> suppliersList = Arrays.asList(
+                Supplier.builder().companyName("KFD").nip("1234567890").city("Lublin").build(),
+                Supplier.builder().companyName("SFD").nip("9876543210").city("Radom").build()
+        );
+
+        XmlManager xmlManager = new XmlManager();
+        String xmlFilePath = "dostawcy.xml";
+
+        // 1. Zapis listy do XML
+        System.out.println("-> Zapisywanie listy dostawców do XML...");
+        xmlManager.saveSuppliersToXml(suppliersList, xmlFilePath);
+
+        // 2. Odczyt z XML i wyświetlenie poprawnych danych
+        System.out.println("\n-> Odczytywanie poprawnego pliku XML:");
+        try {
+            List<Supplier> loadedSuppliers = xmlManager.readSuppliersFromXml(xmlFilePath);
+            System.out.println("Lista odczytanych obiektów:");
+            loadedSuppliers.forEach(s -> System.out.println(" - " + s.getCompanyName() + " (NIP: " + s.getNip() + ") z miasta: " + s.getCity()));
+        } catch (InvalidModelDataException e) {
+            System.err.println("Błąd: " + e.getMessage());
+        }
+
+        // 3. Symulacja błędnego XML (test wyjątku dla 2 zadania)
+        System.out.println("\n-> Symulacja odczytu uszkodzonych danych (wymuszenie wyjątku)...");
+        List<Supplier> badSuppliersList = Arrays.asList(
+                Supplier.builder().companyName("").nip("123456789").city("Swidnik").build()
+        );
+        String badXmlPath = "uszkodzeni_dostawcy.xml";
+        xmlManager.saveSuppliersToXml(badSuppliersList, badXmlPath);
+
+        try {
+            // Próba odczytu z pliku, w którym brakuje nazwy firmy
+            xmlManager.readSuppliersFromXml(badXmlPath);
+        } catch (InvalidModelDataException e) {
+            System.err.println("Złapano oczekiwany wyjątek z powodu braków w XML:");
+            System.err.println(e.getMessage());
+        }
     }
 
     static public void lab3(){
