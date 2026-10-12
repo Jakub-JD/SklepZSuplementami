@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS supplement_entity CASCADE;
+DROP TABLE IF EXISTS customer_entity CASCADE;
+
+CREATE TABLE IF NOT EXISTS supplement_entity (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  price NUMERIC(10,2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS customer_entity (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
+);
