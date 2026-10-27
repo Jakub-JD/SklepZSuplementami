@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import java.util.Map;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,14 +23,13 @@ import org.example.dto.*;
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        //SpringApplication.run(Main.class, args);
         //lab1();
         //lab2();
         //lab3();
 
     }
-    public static void lab1(){
-        // 1. Inicjalizacja bazy asortymentu
+    public static void lab1() {
         List<Supplement> initialInventory = Arrays.asList(
                 Supplement.builder().name("Whey Protein 100").category("Białko").price(89.99).build(),
                 Supplement.builder().name("Creatine Monohydrate").category("Kreatyna").price(39.99).build(),
@@ -49,24 +49,41 @@ public class Main {
                 Supplement.builder().name("Pre-Workout X").category("Przedtreningówka").price(120.00).build()
         );
 
-
         SupplementStore store = new SupplementStore(initialInventory);
         String supplementsFile = "suplementy.txt";
 
         System.out.println("\n--- 1. Wyszukanie elementów przez filtrowanie ---");
-        store.printSupplementsByCategory("Białko");
+        List<Supplement> proteinSupplements = store.getSupplementsByCategory("Białko");
+        proteinSupplements.forEach(s -> System.out.println("- " + s.getName()));
 
         System.out.println("\n--- 2. Zliczanie przedmiotów ---");
-        store.countSameItems(soldItems);
+        Map<Supplement, Long> salesCount = store.getSalesCount(soldItems);
+        salesCount.forEach((product, count) -> 
+                System.out.println("Produkt " + product.getName() + 
+                        " (Cena: " + product.getPrice() + ") sprzedano: " + count + " razy")
+        );
 
         System.out.println("\n--- 3. Mapowanie strumienia ---");
-        store.printAllNamesMapped();
+        List<String> mappedNames = store.getAllSupplementNames();
+        mappedNames.forEach(name -> System.out.println("Nazwa produktu: " + name));
 
         System.out.println("\n--- 4. Zapis danych do pliku ---");
-        store.saveInventoryToFile(supplementsFile);
+        try {
+            store.saveInventoryToFile(supplementsFile);
+            System.out.println("Pomyślnie zapisano asortyment do pliku: " + supplementsFile);
+        } catch (IllegalStateException e) {
+            System.err.println("Operacja zapisu nie powiodła się: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Operacja zapisu nie powiodła się: " + e.getMessage());
+        }
 
         System.out.println("\n--- 5. Filtrowanie i sortowanie danych z pliku ---");
-        store.readAndProcessFromFile(supplementsFile, "Białko");
+        try {
+            List<String> filteredLines = store.getFilteredLinesFromFile(supplementsFile, "Białko");
+            filteredLines.forEach(System.out::println);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Operacja odczytu nie powiodła się: " + e.getMessage());
+        }
     }
 
     public static void lab2() {
@@ -111,7 +128,7 @@ public class Main {
         }
     }
 
-    static public void lab3(){
+    public static void lab3() {
         System.out.println("\n--- ZADANIE 1 i 2: 3 klasy z Lombokiem (Wzorzec Builder) ---");
 
         Supplement whey = Supplement.builder()
@@ -135,11 +152,24 @@ public class Main {
         System.out.println("3. Utworzono zamówienie: " + order.getOrderNumber());
 
 
+        // --- NOWOŚĆ: Polecenie 4.2 i 4.4 (Obsługa wyjątków z Lomboka) ---
+        System.out.println("\n--- TEST BŁĘDÓW 1: Walidacja @NonNull podczas tworzenia ---");
+        try {
+            System.out.println("Próba utworzenia klienta bez imienia (null)...");
+            Customer invalidCustomer = Customer.builder()
+                    .firstName(null) // To wywoła wyjątek
+                    .lastName("Nowak")
+                    .build();
+        } catch (NullPointerException e) {
+            System.err.println("Złapano oczekiwany wyjątek (Lombok): " + e.getMessage());
+        }
+
+
         System.out.println("\n--- ZADANIE 3: Klasy DTO i wycofywanie zmian ---");
         System.out.println("[STAN PIERWOTNY] Cena produktu " + whey.getName() + " wynosi: " + whey.getPrice() + " PLN");
 
         // KROK A: Zapis stanu do DTO
-        SupplementDTO backupDTO = whey.toDTO();
+        SupplementDTO backupDTO = whey.mapToDTO();
         System.out.println("-> Zapisano pierwotny stan obiektu do SupplementDTO.");
 
         // KROK B: Symulacja błędu
@@ -147,9 +177,26 @@ public class Main {
         System.out.println("[BŁĄD SYSTEMU] Ktoś omyłkowo zmienił cenę na: " + whey.getPrice() + " PLN");
 
         // KROK C: Wycofanie zmian przy użyciu DTO
-        whey.restoreFromDTO(backupDTO);
+        whey.updateFromDTO(backupDTO);
         System.out.println("[PO WYCOFANIU ZMIAN] Przywrócono cenę z DTO: " + whey.getPrice() + " PLN");
 
+
+        System.out.println("\n--- TEST BŁĘDÓW 2: Walidacja null w metodzie updateFromDTO ---");
+        try {
+            System.out.println("Próba przywrócenia danych z uszkodzonego (null) pliku/DTO...");
+            whey.updateFromDTO(null); 
+        } catch (IllegalArgumentException e) {
+            System.err.println("Złapano oczekiwany wyjątek (Logika biznesowa): " + e.getMessage());
+        }
+
+        System.out.println("\n--- TEST BŁĘDÓW 3: Stworzenie zlego obiektu ---");
+        try {
+            Customer customer2 = Customer.builder()
+                    .email("jan.kowalski@example.com")
+                    .build();
+        } catch (Exception e) {
+            System.err.println("Złapano oczekiwany wyjątek tworzenia obiektu: " + e.getMessage());
+        }
     }
 
     @Bean

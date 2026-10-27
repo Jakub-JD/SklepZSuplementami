@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class SupplementStore {
@@ -18,56 +20,70 @@ public class SupplementStore {
         this.inventory = inventory;
     }
 
-    // 1. Filtrowanie po kategorii
-    public void printSupplementsByCategory(String category) {
-        inventory.stream()
-                .filter(s -> s.getCategory().toLowerCase().equals(category.toLowerCase()))
-                .forEach(s -> System.out.println("- " + s.getName()));
+    /**
+     * @param category nazwa kategorii
+     * @return lista suplementów w danej kategorii
+     */
+    public List<Supplement> getSupplementsByCategory(String category) {
+        return inventory.stream()
+                .filter(s -> s.getCategory().equalsIgnoreCase(category))
+                .collect(Collectors.toList());
     }
 
-    // 2. Zliczanie powtorzen
-    public void countSameItems(List<Supplement> items) {
-        items.stream()
-                .distinct()
-                .forEach(unikalnyProdukt -> {
-                    long liczbaWystapien = items.stream()
-                            .filter(s -> s.equals(unikalnyProdukt))
-                            .count();
-                    System.out.println("Produkt " + unikalnyProdukt.getName() +
-                            " (Cena: " + unikalnyProdukt.getPrice() + ") sprzedano: " + liczbaWystapien + " razy");
-                });
+    /**
+     * @param items lista sprzedanych produktów (mogą się powtarzać)
+     * @return mapa z produktem jako kluczem i liczbą wystąpień jako wartością
+     */
+    public Map<Supplement, Long> getSalesCount(List<Supplement> items) {
+        return items.stream()
+                .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
     }
 
-    // 3. Mapowanie nazw
-    public void printAllNamesMapped() {
-        inventory.stream()
+    /**
+     * @return lista nazw wszystkich suplementów
+     */
+    public List<String> getAllSupplementNames() {
+        return inventory.stream()
                 .map(Supplement::getName)
-                .forEach(name -> System.out.println("Nazwa produktu: " + name));
+                .collect(Collectors.toList());
     }
 
-    // 4. Zapis do pliku (java.io)
+    /**
+     * @param fileName nazwa pliku docelowego
+     * @throws IllegalStateException gdy zapis do pliku się nie powiedzie
+     */
     public void saveInventoryToFile(String fileName) {
+        if (fileName == null || fileName.isBlank()) {
+            throw new IllegalArgumentException("Nazwa pliku nie może być pusta ani nullem!");
+        }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (Supplement s : inventory) {
                 writer.write(s.toString());
                 writer.newLine();
             }
-            System.out.println("Pomyślnie zapisano asortyment do pliku: " + fileName);
         } catch (IOException e) {
-            System.err.println("Błąd zapisu pliku: " + e.getMessage());
+            throw new IllegalStateException("Nie udało się zapisać asortymentu do pliku: " + fileName, e);
         }
     }
 
-    // 5. Odczyt i filtrowanie (java.nio)
-    public void readAndProcessFromFile(String fileName, String filterKeyword) {
+    /**
+     * @param fileName nazwa pliku źródłowego
+     * @param filterKeyword słowo kluczowe do wyszukania
+     * @return posortowana lista linii spełniających kryteria
+     * @throws IllegalArgumentException gdy plik nie istnieje lub nie można go odczytać
+     */
+    public List<String> getFilteredLinesFromFile(String fileName, String filterKeyword) {
+        if (fileName == null || fileName.isBlank()) {
+            throw new IllegalArgumentException("Nazwa pliku nie może być pusta ani nullem!");
+        }
         Path path = Paths.get(fileName);
         try {
-            Files.lines(path)
+            return Files.lines(path)
                     .filter(line -> line.contains(filterKeyword))
                     .sorted()
-                    .forEach(System.out::println);
+                    .collect(Collectors.toList());
         } catch (IOException e) {
-            System.err.println("Błąd odczytu pliku: " + e.getMessage());
+            throw new IllegalArgumentException("Błąd odczytu. Upewnij się, że plik istnieje: " + fileName, e);
         }
     }
 }

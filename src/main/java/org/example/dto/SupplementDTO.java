@@ -4,6 +4,11 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
+/**
+ * Obiekt transferowy (DTO) przenoszący dane suplementu.
+ * @throws NullPointerException jeśli podczas tworzenia obiektu
+ * parametry name lub category będą wartością null.
+ */
 @RequiredArgsConstructor
 @Accessors(fluent = true)
 @Getter

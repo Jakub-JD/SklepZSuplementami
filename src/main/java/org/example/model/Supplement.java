@@ -8,6 +8,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import org.example.dto.SupplementDTO;
 
+/**
+ * Klasa reprezentująca model suplementu w domenie systemu.
+ * @throws NullPointerException jeśli podczas tworzenia obiektu
+ * parametry name lub category będą wartością null.
+ */
+
 @Getter
 @Setter
 @Builder
@@ -22,11 +28,22 @@ public class Supplement {
     private String category;
     private double price;
 
-    public SupplementDTO toDTO() {
+    /**
+     * Metoda mapująca dane suplementu na obiekt SupplementDTO
+     */
+    public SupplementDTO mapToDTO() {
         return new SupplementDTO(this.name, this.category, this.price);
     }
 
-    public void restoreFromDTO(SupplementDTO dto) {
+     /**
+     * Aktualizuje dane suplementu na podstawie obiektu transferowego.
+     * @throws IllegalArgumentException gdy parametr dto jest wartością null
+     * @param dto obiekt transferowy zawierający dane suplementu
+     */
+    public void updateFromDTO(SupplementDTO dto) {
+         if (dto == null) {
+            throw new IllegalArgumentException("Nie można zaktualizować danych suplementu: przekazany obiekt SupplementDTO jest nullem.");
+        }
         this.name = dto.name();
         this.category = dto.category();
         this.price = dto.price();
