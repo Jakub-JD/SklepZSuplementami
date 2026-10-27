@@ -51,6 +51,7 @@ public class SupplementStore {
     /**
      * @param fileName nazwa pliku docelowego
      * @throws IllegalStateException gdy zapis do pliku się nie powiedzie
+     * @throws IllegalArgumentException gdy nazwa pliku ma wartosc null lub jest pusta
      */
     public void saveInventoryToFile(String fileName) {
         if (fileName == null || fileName.isBlank()) {
