@@ -20,10 +20,6 @@ public class SupplementStore {
         this.inventory = inventory;
     }
 
-    /**
-     * @param category nazwa kategorii
-     * @return lista suplementów w danej kategorii
-     */
     public List<Supplement> getSupplementsByCategory(String category) {
         return inventory.stream()
                 .filter(s -> s.getCategory().equalsIgnoreCase(category))
@@ -31,7 +27,6 @@ public class SupplementStore {
     }
 
     /**
-     * @param items lista sprzedanych produktów (mogą się powtarzać)
      * @return mapa z produktem jako kluczem i liczbą wystąpień jako wartością
      */
     public Map<Supplement, Long> getSalesCount(List<Supplement> items) {
@@ -39,9 +34,6 @@ public class SupplementStore {
                 .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
     }
 
-    /**
-     * @return lista nazw wszystkich suplementów
-     */
     public List<String> getAllSupplementNames() {
         return inventory.stream()
                 .map(Supplement::getName)
@@ -49,7 +41,6 @@ public class SupplementStore {
     }
 
     /**
-     * @param fileName nazwa pliku docelowego
      * @throws IllegalStateException gdy zapis do pliku się nie powiedzie
      * @throws IllegalArgumentException gdy nazwa pliku ma wartosc null lub jest pusta
      */
@@ -68,8 +59,6 @@ public class SupplementStore {
     }
 
     /**
-     * @param fileName nazwa pliku źródłowego
-     * @param filterKeyword słowo kluczowe do wyszukania
      * @return posortowana lista linii spełniających kryteria
      * @throws IllegalArgumentException gdy plik nie istnieje lub nie można go odczytać
      */

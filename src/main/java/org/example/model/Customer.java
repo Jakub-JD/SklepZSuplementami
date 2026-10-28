@@ -26,17 +26,12 @@ public class Customer {
     private @NonNull String lastName;
     private String email;
 
-     /**
-     * Metoda mapująca dane użytkownika na obiekt CustomerDTO
-     */
     public CustomerDTO mapToDTO() {
         return new CustomerDTO(this.firstName, this.lastName, this.email);
     }
 
     /**
-     * Aktualizuje dane klienta na podstawie obiektu transferowego.
      * @throws IllegalArgumentException gdy parametr dto jest wartością null
-     * @param dto obiekt transferowy zawierający dane klienta
      */
     public void updateFromDTO(CustomerDTO dto) {
 

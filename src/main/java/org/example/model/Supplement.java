@@ -28,17 +28,12 @@ public class Supplement {
     private String category;
     private double price;
 
-    /**
-     * Metoda mapująca dane suplementu na obiekt SupplementDTO
-     */
     public SupplementDTO mapToDTO() {
         return new SupplementDTO(this.name, this.category, this.price);
     }
 
      /**
-     * Aktualizuje dane suplementu na podstawie obiektu transferowego.
      * @throws IllegalArgumentException gdy parametr dto jest wartością null
-     * @param dto obiekt transferowy zawierający dane suplementu
      */
     public void updateFromDTO(SupplementDTO dto) {
          if (dto == null) {
