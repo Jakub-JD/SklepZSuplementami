@@ -1,28 +1,41 @@
 package org.example.model;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import org.example.dto.OrderDTO;
 
 /**
  * Klasa reprezentująca model zamówienia w domenie systemu.
+ *
  * @throws NullPointerException jeśli podczas tworzenia obiektu
- * parametr orederNumber będzie wartością null.
+ * parametr orderNumber będzie wartością null.
  */
 
+@Entity
+@Table(name = "orders")
 @Getter
 @Setter
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 @EqualsAndHashCode
 public class Order {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
     private @NonNull String orderNumber;
+
     private double totalAmount;
 
     public OrderDTO mapToDTO() {
