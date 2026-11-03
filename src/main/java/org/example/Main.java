@@ -23,7 +23,7 @@ import org.example.dto.*;
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        //SpringApplication.run(Main.class, args);
+        SpringApplication.run(Main.class, args);
         //lab1();
         //lab2();
         //lab3();
@@ -198,51 +198,50 @@ public class Main {
             System.err.println("Złapano oczekiwany wyjątek tworzenia obiektu: " + e.getMessage());
         }
     }
-
-    @Bean
-    public CommandLineRunner runJdbcDemo(CustomerRepository customerRepo, SupplementRepository supplementRepo) {
-        return args -> {
-            System.out.println("\nModuł klienta");
-
-            // 1. zapis danych o klientach
-            System.out.println("1. Dodawanie klientów do bazy");
-            customerRepo.save(CustomerEntity.builder().firstName("Jakub").lastName("Fus").email("jakub@fus.pl").active(true).build());
-            customerRepo.save(CustomerEntity.builder().firstName("Jakub").lastName("Gwozdowski").email("jakub@gwozdowski.pl").active(true).build());
-            customerRepo.save(CustomerEntity.builder().firstName("Jan").lastName("Kowalski").email("jan@kowalski.pl").active(true).build());
-
-            // 2. odczyt danych o klientach i wybranym kliencie
-            System.out.println("\n2. Lista aktywnych klientów");
-            customerRepo.findAllActive().forEach(c ->
-                    System.out.println("ID: " + c.getId() + " | " + c.getFirstName() + " " + c.getLastName())
-            );
-            System.out.println("Klient o wybranym ID: " + customerRepo.findById(2L).getId() +" "+ customerRepo.findById(2L).getFirstName() +" "+ customerRepo.findById(2L).getLastName()+" "+ customerRepo.findById(2L).getEmail());
-
-            // 3. aktualizacja danych klientów
-            System.out.println("\n3. Aktualizacja customer (ID: 2)");
-            CustomerEntity update = CustomerEntity.builder().firstName("Teresa").lastName("Kowalska").email("teresa@kowal.xyz").build();
-            customerRepo.update(2L, update);
-
-            System.out.println("Odczyt po edycji: " + customerRepo.findById(2L).getEmail());
-
-            // 4. Usuwanie miękkie (Dezaktywacja) i permanentne
-            System.out.println("\n4. Usuwanie klientów");
-            System.out.println("-> Dezaktywacja Jakub Fus (ID: 1)...");
-            customerRepo.deactivate(1L);
-
-            System.out.println("-> Permanentne usunięcie Jan Kowalski (ID: 3)...");
-            customerRepo.deletePermanently(3L);
-
-            System.out.println("\nLista aktywnych klientów po usuwaniu:");
-            customerRepo.findAllActive().forEach(c ->
-                    System.out.println("ID: " + c.getId() + " | " + c.getFirstName() + " " + c.getLastName())
-            );
-
-
-            System.out.println("\n-> Suplementy");
-            supplementRepo.save(SupplementEntity.builder().name("Kreatyna").price(50.0).build());
-            supplementRepo.updatePrice(1L, 45.0);
-            supplementRepo.findAll().forEach(s -> System.out.println(s.getName() + " - " + s.getPrice() + " PLN"));
-        };
-    }
+// Lab 5
+//    @Bean
+//    public CommandLineRunner runJdbcDemo(CustomerRepository customerRepo, SupplementRepository supplementRepo) {
+//        return args -> {
+//            System.out.println("\nModuł klienta");
+//
+//            // 1. zapis danych o klientach
+//            System.out.println("1. Dodawanie klientów do bazy");
+//            customerRepo.save(CustomerEntity.builder().firstName("Jakub").lastName("Fus").email("jakub@fus.pl").active(true).build());
+//            customerRepo.save(CustomerEntity.builder().firstName("Jakub").lastName("Gwozdowski").email("jakub@gwozdowski.pl").active(true).build());
+//            customerRepo.save(CustomerEntity.builder().firstName("Jan").lastName("Kowalski").email("jan@kowalski.pl").active(true).build());
+//
+//            // 2. odczyt danych o klientach i wybranym kliencie
+//            System.out.println("\n2. Lista aktywnych klientów");
+//            customerRepo.findAllActive().forEach(c ->
+//                    System.out.println("ID: " + c.getId() + " | " + c.getFirstName() + " " + c.getLastName())
+//            );
+//            System.out.println("Klient o wybranym ID: " + customerRepo.findById(2L).getId() +" "+ customerRepo.findById(2L).getFirstName() +" "+ customerRepo.findById(2L).getLastName()+" "+ customerRepo.findById(2L).getEmail());
+//
+//            // 3. aktualizacja danych klientów
+//            System.out.println("\n3. Aktualizacja customer (ID: 2)");
+//            CustomerEntity update = CustomerEntity.builder().firstName("Teresa").lastName("Kowalska").email("teresa@kowal.xyz").build();
+//            customerRepo.update(2L, update);
+//
+//            System.out.println("Odczyt po edycji: " + customerRepo.findById(2L).getEmail());
+//
+//            // 4. Usuwanie miękkie (Dezaktywacja) i permanentne
+//            System.out.println("\n4. Usuwanie klientów");
+//            System.out.println("-> Dezaktywacja Jakub Fus (ID: 1)...");
+//            customerRepo.deactivate(1L);
+//
+//            System.out.println("-> Permanentne usunięcie Jan Kowalski (ID: 3)...");
+//            customerRepo.deletePermanently(3L);
+//
+//            System.out.println("\nLista aktywnych klientów po usuwaniu:");
+//            customerRepo.findAllActive().forEach(c ->
+//                    System.out.println("ID: " + c.getId() + " | " + c.getFirstName() + " " + c.getLastName())
+//            );
+//
+//
+//            System.out.println("\n-> Suplementy");
+//            supplementRepo.save(SupplementEntity.builder().name("Kreatyna").price(50.0).build());
+//            supplementRepo.updatePrice(1L, 45.0);
+//            supplementRepo.findAll().forEach(s -> System.out.println(s.getName() + " - " + s.getPrice() + " PLN"));
+//        };
 
 }
