@@ -13,14 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XmlManager {
-    // Zadanie 1: Zapis do pliku XML
     public void saveSuppliersToXml(List<Supplier> suppliers, String filePath) {
+        if (filePath == null || filePath.isBlank()) {
+            throw new IllegalArgumentException("Path cannot be empty!");
+        }
+        if (suppliers == null) {
+            suppliers = new ArrayList<>();
+        }
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
 
-            // Tworzenie głównego elementu <suppliers>
             Element rootElement = doc.createElement("suppliers");
             doc.appendChild(rootElement);
 
@@ -56,8 +60,10 @@ public class XmlManager {
         }
     }
 
-    // Zadanie 2: Odczyt z XML i rzucanie wyjątku przy niespełnionych warunkach
     public List<Supplier> readSuppliersFromXml(String filePath) throws InvalidModelDataException {
+        if (filePath == null || filePath.isBlank()) {
+            throw new IllegalArgumentException("Path cannot be null");
+        }
         List<Supplier> suppliers = new ArrayList<>();
         try {
             File inputFile = new File(filePath);
@@ -82,7 +88,6 @@ public class XmlManager {
                     String nip = getElementValue(element, "nip");
                     String city = getElementValue(element, "city");
 
-                    // Zadanie 2: Jeśli brakuje wymaganych danych, przerywamy i rzucamy wyjątek zamiast tworzyć obiekt
                     if (companyName == null || companyName.trim().isEmpty() ||
                             nip == null || nip.trim().isEmpty()) {
                         throw new InvalidModelDataException("Brak wymaganych danych w pliku XML! Próba utworzenia obiektu (indeks " + i + ") bez nazwy firmy lub NIPu.");
@@ -105,7 +110,15 @@ public class XmlManager {
         return suppliers;
     }
 
-    // Pobierania tekstu z tagów XML
+    public boolean validateXmlFileHasContent(String filePath) {
+        File file = new File(filePath);
+        return file.exists() && file.length() > 0;
+    }
+
+    public int countSuppliersInList(List<Supplier> suppliers) {
+        return suppliers == null ? 0 : suppliers.size();
+    }
+
     private String getElementValue(Element parentElement, String tagName) {
         NodeList nodeList = parentElement.getElementsByTagName(tagName);
         if (nodeList != null && nodeList.getLength() > 0) {

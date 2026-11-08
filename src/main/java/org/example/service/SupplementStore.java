@@ -30,6 +30,9 @@ public class SupplementStore {
      * @return mapa z produktem jako kluczem i liczbą wystąpień jako wartością
      */
     public Map<Supplement, Long> getSalesCount(List<Supplement> items) {
+        if (items == null) {
+            return Map.of();
+        }
         return items.stream()
                 .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
     }
@@ -38,6 +41,17 @@ public class SupplementStore {
         return inventory.stream()
                 .map(Supplement::getName)
                 .collect(Collectors.toList());
+    }
+
+    public List<Supplement> getSupplementsCheaperThan(double maxPrice) {
+        return inventory.stream()
+                .filter(s -> s.getPrice() <= maxPrice)
+                .collect(Collectors.toList());
+    }
+
+    public boolean hasSupplement(String name) {
+        if (name == null) return false;
+        return inventory.stream().anyMatch(s -> s.getName().equalsIgnoreCase(name));
     }
 
     /**
