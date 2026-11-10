@@ -62,7 +62,7 @@ class XmlManagerTest {
 
     @Test
     void testReadSuppliersFromXml_FileNotFound() throws InvalidModelDataException {
-        List<Supplier> result = xmlManager.readSuppliersFromXml("non_existent_file_abc.xml");
+        List<Supplier> result = xmlManager.readSuppliersFromXml("non_existent_file.xml");
         assertTrue(result.isEmpty());
     }
 

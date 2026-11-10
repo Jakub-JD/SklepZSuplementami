@@ -20,14 +20,18 @@ import java.util.List;
 import org.example.model.*;
 import org.example.dto.*;
 
+import org.example.model.DeanHoursEvent;
+import org.example.service.*;
+
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
-        //lab1();
-        //lab2();
-        //lab3();
-
+//        SpringApplication.run(Main.class, args);
+//        lab1();
+//        lab2();
+//        lab3();
+//        StaffService.StaffFunc();
+//        DeanHoursService.DeanHoursFunc();
     }
     public static void lab1() {
         List<Supplement> initialInventory = Arrays.asList(

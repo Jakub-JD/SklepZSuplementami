@@ -44,7 +44,7 @@ class SupplementStoreTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"Białko", "Kreatyna", "NieznanaKategoria"})
+    @ValueSource(strings = {"Białko", "Kreatyna", "NonExistent"})
     void testGetSupplementsByCategory_Parameterized(String category) {
         List<Supplement> result = store.getSupplementsByCategory(category);
         assertNotNull(result);
