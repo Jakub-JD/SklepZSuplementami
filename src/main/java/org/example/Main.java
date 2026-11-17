@@ -1,14 +1,11 @@
 package org.example;
 
 import org.example.model.Supplement;
+import org.example.repository.*;
 import org.example.service.SupplementStore;
 import org.example.model.Supplier;
 import org.example.service.XmlManager;
 import org.example.exception.InvalidModelDataException;
-import org.example.repository.CustomerEntity;
-import org.example.repository.CustomerRepository;
-import org.example.repository.SupplementEntity;
-import org.example.repository.SupplementRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,8 +27,8 @@ public class Main {
 //        lab1();
 //        lab2();
 //        lab3();
-//        StaffService.StaffFunc();
-//        DeanHoursService.DeanHoursFunc();
+//        runStaff();
+//        runDeanHours();
     }
     public static void lab1() {
         List<Supplement> initialInventory = Arrays.asList(
@@ -198,6 +195,37 @@ public class Main {
             System.err.println("Złapano oczekiwany wyjątek tworzenia obiektu: " + e.getMessage());
         }
     }
+
+    public static void runStaff(){
+        StaffService staffService = new StaffService(new JsoupStaffRepository());
+
+        System.out.println("=== LISTA PRACOWNIKÓW ===");
+        Map<String, List<StaffMember>> staffMap = staffService.getStaffGroupedAndSorted();
+        staffMap.forEach((dept, members) -> {
+            System.out.println("\n" + dept);
+            members.forEach(System.out::println);
+        });
+
+        System.out.println("\n=== LISTA DOKTORÓW ===");
+        Map<String, List<StaffMember>> doctorsMap = staffService.getDoctorsGroupedAndSorted();
+        doctorsMap.forEach((dept, members) -> {
+            System.out.println("\n" + dept);
+            members.forEach(System.out::println);
+        });
+    }
+
+    private static void runDeanHours() {
+        System.out.println("\n=== GODZINY DZIEKAŃSKIE / REKTORSKIE  ===");
+        DeanHoursService deanHoursService = new DeanHoursService();
+        List<DeanHoursEvent> events = deanHoursService.getSortedDeanHoursEvents();
+
+        if (events.isEmpty()) {
+            System.out.println("\nNie znaleziono ogłoszeń.");
+        } else {
+            events.forEach(event -> System.out.println("\n" + event + "\n--------------------------------------------------"));
+        }
+    }
+
 // Lab 5
 //    @Bean
 //    public CommandLineRunner runJdbcDemo(CustomerRepository customerRepo, SupplementRepository supplementRepo) {

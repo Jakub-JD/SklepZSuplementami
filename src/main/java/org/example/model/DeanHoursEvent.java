@@ -2,6 +2,9 @@ package org.example.model;
 
 import java.time.LocalDate;
 
+/**
+ * Model reprezentujący ogłoszenie o godzinach dziekańskich lub rektorskich.
+ */
 public class DeanHoursEvent {
     String title;
     String content;
@@ -9,10 +12,10 @@ public class DeanHoursEvent {
     String url;
 
     public DeanHoursEvent(String title, String content, LocalDate date, String url) {
-        this.title = title;
-        this.content = content;
+        this.title = title != null ? title : "Brak tytułu";
+        this.content = content != null ? content : "";
         this.date = date != null ? date : LocalDate.MIN;
-        this.url = url;
+        this.url = url != null ? url : "";
     }
 
     public String getTitle() { return title; }
@@ -22,10 +25,11 @@ public class DeanHoursEvent {
 
     @Override
     public String toString() {
-        String dateStr = (date.equals(LocalDate.MIN)) ? "Brak daty w treści" : date.toString();
+        String dateStr = date.equals(LocalDate.MIN) ? "Brak daty w treści" : date.toString();
+        String truncatedContent = content.length() > 120 ? content.substring(0, 120) + "..." : content;
         return "Tytuł: " + title +
                 "\nData: " + dateStr +
-                "\nTreść: " + (content.length() > 120 ? content.substring(0, 120) + "..." : content) +
+                "\nTreść: " + truncatedContent +
                 "\nLink: " + (url.isEmpty() ? "Brak" : url);
     }
 }
