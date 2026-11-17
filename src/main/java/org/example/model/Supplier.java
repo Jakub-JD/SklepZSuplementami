@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Klasa reprezentująca dostawcę w systemie.
+ * Wykorzystuje Lomboka do redukcji kodu.
+ */
 @Data
 @Builder
 @NoArgsConstructor

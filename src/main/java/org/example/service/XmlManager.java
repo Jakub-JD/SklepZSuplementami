@@ -12,14 +12,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa odpowiedzialna za zarządzanie zapisem i odczytem danych dostawców do/z plików XML.
+ */
 public class XmlManager {
+
+    /**
+     * Zapisuje listę dostawców do wskazanego pliku XML.
+     * @   suppliers lista obiektów klasy Supplier do zapisu
+     * @param filePath  ścieżka do pliku docelowego
+     */
     public void saveSuppliersToXml(List<Supplier> suppliers, String filePath) {
-        if (filePath == null || filePath.isBlank()) {
-            throw new IllegalArgumentException("Path cannot be empty!");
-        }
-        if (suppliers == null) {
-            suppliers = new ArrayList<>();
-        }
+        validateFilePath(filePath);
+        List<Supplier> safeSuppliers = (suppliers != null) ? suppliers : new ArrayList<>();
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -28,21 +33,13 @@ public class XmlManager {
             Element rootElement = doc.createElement("suppliers");
             doc.appendChild(rootElement);
 
-            for (Supplier supplier : suppliers) {
+            for (Supplier supplier : safeSuppliers) {
                 Element supplierElement = doc.createElement("supplier");
                 rootElement.appendChild(supplierElement);
 
-                Element companyName = doc.createElement("companyName");
-                companyName.appendChild(doc.createTextNode(supplier.getCompanyName() != null ? supplier.getCompanyName() : ""));
-                supplierElement.appendChild(companyName);
-
-                Element nip = doc.createElement("nip");
-                nip.appendChild(doc.createTextNode(supplier.getNip() != null ? supplier.getNip() : ""));
-                supplierElement.appendChild(nip);
-
-                Element city = doc.createElement("city");
-                city.appendChild(doc.createTextNode(supplier.getCity() != null ? supplier.getCity() : ""));
-                supplierElement.appendChild(city);
+                appendElement(doc, supplierElement, "companyName", supplier.getCompanyName());
+                appendElement(doc, supplierElement, "nip", supplier.getNip());
+                appendElement(doc, supplierElement, "city", supplier.getCity());
             }
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -53,25 +50,27 @@ public class XmlManager {
             StreamResult result = new StreamResult(new File(filePath));
             transformer.transform(source, result);
 
-            System.out.println("Zapisano dane do pliku XML: " + filePath);
-
         } catch (Exception e) {
-            System.err.println("Błąd podczas zapisu do XML: " + e.getMessage());
+            throw new RuntimeException("Błąd podczas zapisu danych do pliku XML: " + filePath, e);
         }
     }
 
+    /**
+     * Odczyt listy dostawców z pliku XML wraz z walidacją danych.
+     *
+     * @param filePath ścieżka do pliku XML
+     * @return lista poprawnie zweryfikowanych dostawców
+     * @throws InvalidModelDataException gdy dane w pliku nie spełniają wymagań
+     */
     public List<Supplier> readSuppliersFromXml(String filePath) throws InvalidModelDataException {
-        if (filePath == null || filePath.isBlank()) {
-            throw new IllegalArgumentException("Path cannot be null");
-        }
+        validateFilePath(filePath);
         List<Supplier> suppliers = new ArrayList<>();
-        try {
-            File inputFile = new File(filePath);
-            if (!inputFile.exists()) {
-                System.out.println("Plik XML nie istnieje.");
-                return suppliers;
-            }
 
+        File inputFile = new File(filePath);
+        if (!inputFile.exists()) {
+            return suppliers;
+        }
+        try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
@@ -105,7 +104,7 @@ public class XmlManager {
         } catch (InvalidModelDataException e) {
             throw e;
         } catch (Exception e) {
-            System.err.println("Inny błąd podczas odczytu pliku XML: " + e.getMessage());
+            throw new RuntimeException("Błąd podczas odczytu pliku XML: " + filePath, e);
         }
         return suppliers;
     }
@@ -119,9 +118,21 @@ public class XmlManager {
         return suppliers == null ? 0 : suppliers.size();
     }
 
+    private void validateFilePath(String filePath) {
+        if (filePath == null || filePath.isBlank()) {
+            throw new IllegalArgumentException("Ścieżka pliku nie może być pusta ani nullem!");
+        }
+    }
+
+    private void appendElement(Document doc, Element parent, String tagName, String textValue) {
+        Element element = doc.createElement(tagName);
+        element.appendChild(doc.createTextNode(textValue != null ? textValue : ""));
+        parent.appendChild(element);
+    }
+
     private String getElementValue(Element parentElement, String tagName) {
         NodeList nodeList = parentElement.getElementsByTagName(tagName);
-        if (nodeList != null && nodeList.getLength() > 0) {
+        if (nodeList.getLength() > 0) {
             Node node = nodeList.item(0);
             return node.getTextContent();
         }

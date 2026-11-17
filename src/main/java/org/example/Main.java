@@ -101,11 +101,9 @@ public class Main {
         XmlManager xmlManager = new XmlManager();
         String xmlFilePath = "dostawcy.xml";
 
-        // 1. Zapis listy do XML
         System.out.println("-> Zapisywanie listy dostawców do XML...");
         xmlManager.saveSuppliersToXml(suppliersList, xmlFilePath);
 
-        // 2. Odczyt z XML i wyświetlenie poprawnych danych
         System.out.println("\n-> Odczytywanie poprawnego pliku XML:");
         try {
             List<Supplier> loadedSuppliers = xmlManager.readSuppliersFromXml(xmlFilePath);
@@ -115,7 +113,6 @@ public class Main {
             System.err.println("Błąd: " + e.getMessage());
         }
 
-        // 3. Symulacja błędnego XML (test wyjątku dla 2 zadania)
         System.out.println("\n-> Symulacja odczytu uszkodzonych danych (wymuszenie wyjątku)...");
         List<Supplier> badSuppliersList = Arrays.asList(
                 Supplier.builder().companyName("").nip("123456789").city("Swidnik").build()
@@ -124,7 +121,6 @@ public class Main {
         xmlManager.saveSuppliersToXml(badSuppliersList, badXmlPath);
 
         try {
-            // Próba odczytu z pliku, w którym brakuje nazwy firmy
             xmlManager.readSuppliersFromXml(badXmlPath);
         } catch (InvalidModelDataException e) {
             System.err.println("Złapano oczekiwany wyjątek z powodu braków w XML:");
