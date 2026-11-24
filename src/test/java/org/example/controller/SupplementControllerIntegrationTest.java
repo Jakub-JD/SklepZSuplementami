@@ -63,7 +63,7 @@ public class SupplementControllerIntegrationTest {
     }
 
     @Test
-    public void whenValidInput_thenCreateSupplement() throws Exception {
+    public void postSupplementTest() throws Exception {
         Supplement kreatyna = createSupplementObject("Kreatyna Monohydrat", "Siła", 79.99);
 
         mvc.perform(post("/api/supplements")
@@ -80,7 +80,7 @@ public class SupplementControllerIntegrationTest {
     }
 
     @Test
-    public void givenSupplements_whenGetAllSupplements_thenStatus200() throws Exception {
+    public void getAllSupplementTest() throws Exception {
         saveTestSupplement("Białko WPC", "Białko", 119.99);
         saveTestSupplement("Witamina D3", "Witaminy", 29.99);
 
@@ -96,8 +96,10 @@ public class SupplementControllerIntegrationTest {
     }
 
     @Test
-    public void givenSupplement_whenGetById_thenStatus200() throws Exception {
+    public void getSupplementByIdTest() throws Exception {
         Supplement saved = saveTestSupplement("Magnez B6", "Minerały", 24.50);
+        saveTestSupplement("Białko WPC", "Białko", 119.99);
+        saveTestSupplement("Witamina D3", "Witaminy", 29.99);
 
         mvc.perform(get("/api/supplements/" + saved.getId())
                         .with(httpBasic("user", "haslo1234"))
@@ -109,7 +111,7 @@ public class SupplementControllerIntegrationTest {
     }
 
     @Test
-    public void givenSupplement_whenUpdate_thenStatus200AndUpdatedInDb() throws Exception {
+    public void updateSupplementTest() throws Exception {
         Supplement saved = saveTestSupplement("Kreatyna", "Siła", 60.00);
         Supplement updatedData = createSupplementObject("Kreatyna Jabłczan", "Siła i Wytrzymałość", 85.00);
 
@@ -129,7 +131,7 @@ public class SupplementControllerIntegrationTest {
     }
 
     @Test
-    public void givenSupplement_whenDelete_thenRemovedFromDb() throws Exception {
+    public void deleteSupplementTest() throws Exception {
         Supplement saved = saveTestSupplement("Omega 3", "Zdrowie", 39.99);
 
         mvc.perform(delete("/api/supplements/" + saved.getId()).with(httpBasic("user", "haslo1234")))
