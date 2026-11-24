@@ -16,6 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
  * Klasa konfiguracyjna pakietu Spring Security.
  * Odpowiada za zarządzanie uwierzytelnianiem, szyfrowaniem haseł
  * oraz regułami autoryzacji i dostępu do endpointów API.
+ *
+ * @author Jakub Fus
  */
 
 @Configuration

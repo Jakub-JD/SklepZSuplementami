@@ -16,6 +16,8 @@ import org.example.dto.CustomerDTO;
  *
  * @throws NullPointerException jeśli podczas tworzenia obiektu
  * parametry firtName lub lastName będą wartością null.
+ *
+ * @author Jakub Fus
  */
 
 @Entity

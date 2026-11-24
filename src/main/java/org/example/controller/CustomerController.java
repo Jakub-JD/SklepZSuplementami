@@ -12,6 +12,8 @@ import java.util.List;
  *
  * Udostępnia interfejs sieciowy API (pod adresem /api/customers)
  * do obsługi operacji CRUD.
+ *
+ * @author Jakub Fus
  */
 
 @RestController

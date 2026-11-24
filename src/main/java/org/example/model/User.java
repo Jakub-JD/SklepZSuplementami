@@ -9,6 +9,8 @@ import lombok.Data;
  *
  * @throws NullPointerException jeśli podczas tworzenia obiektu
  * parametry username, passwordHash lub role będą wartością null.
+ *
+ * @author Jakub Fus
  */
 
 @Entity

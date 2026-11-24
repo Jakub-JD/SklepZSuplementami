@@ -16,6 +16,8 @@ import org.example.dto.OrderDTO;
  *
  * @throws NullPointerException jeśli podczas tworzenia obiektu
  * parametr orderNumber będzie wartością null.
+ *
+ * @author Jakub Fus
  */
 
 @Entity

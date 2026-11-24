@@ -8,6 +8,8 @@ import lombok.experimental.Accessors;
  * Obiekt transferowy (DTO) przenoszący dane suplementu.
  * @throws NullPointerException jeśli podczas tworzenia obiektu
  * parametry name lub category będą wartością null.
+ *
+ * @author Jakub Fus
  */
 @RequiredArgsConstructor
 @Accessors(fluent = true)

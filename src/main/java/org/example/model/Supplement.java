@@ -16,6 +16,8 @@ import org.example.dto.SupplementDTO;
  *
  * @throws NullPointerException jeśli podczas tworzenia obiektu
  * parametry name lub category będą wartością null.
+ *
+ * @author Jakub Fus
  */
 
 @Entity

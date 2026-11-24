@@ -5,9 +5,11 @@ import java.net.*;
 import java.util.Scanner;
 
 /**
- * Aplikacja serwerowa (węzeł TCP) udostępniająca pliki lokalne z wykorzystaniem szyfrowania.
+ * Aplikacja serwerowa udostępniająca pliki lokalne z wykorzystaniem szyfrowania.
  * Serwer działa w pętli nieskończonej, obsługując żądania klientów sekwencyjnie.
  * Przed wysłaniem zawartości, każda linia pliku jest zabezpieczana szyfrem Vigenère'a.
+ *
+ * @author Jakub Fus
  */
 
 public class ServerApp {

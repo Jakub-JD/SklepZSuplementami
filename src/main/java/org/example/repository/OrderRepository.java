@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
  *
  * Zapewnia automatyczną implementację podstawowych operacji bazodanowych
  * dostarczaną przez Spring Data JPA.
+ *
+ * @author Jakub Fus
  */
 
 @Repository

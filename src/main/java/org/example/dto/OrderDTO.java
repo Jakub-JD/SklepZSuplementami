@@ -8,6 +8,8 @@ import lombok.experimental.Accessors;
  * Obiekt transferowy (DTO) przenoszący dane zamówienia.
  * @throws NullPointerException jeśli podczas tworzenia obiektu
  * parametr orederNumber będzie wartością null.
+ *
+ * @author Jakub Fus
  */
 @RequiredArgsConstructor
 @Accessors(fluent = true)

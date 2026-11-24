@@ -9,6 +9,8 @@ import java.util.Optional;
 /**
  * Repozytorium JPA dla encji użytkownika (User).
  * Odpowiada za operacje bazodanowe związane z autoryzacją i kontami.
+ *
+ * @author Jakub Fus
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

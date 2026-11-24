@@ -9,6 +9,8 @@ import java.util.Scanner;
  * Klasa odpowiada za nawiązanie połączenia, żądanie konkretnego zasobu (pliku)
  * oraz deszyfrowanie odebranych pakietów tekstowych.
  * Rozpoznaje i obsługuje komunikaty błędów (np. brak pliku na serwerze).
+ *
+ * @author Jakub Fus
  */
 
 public class ClientApp {

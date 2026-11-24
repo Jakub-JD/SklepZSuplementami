@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Kontroler REST odpowiedzialny za zarządzanie użytkownikami,
  * w tym proces rejestracji oraz zabezpieczanie danych logowania.
+ *
+ * @author Jakub Fus
  */
 
 @RestController

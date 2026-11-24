@@ -4,6 +4,8 @@ package org.example.network;
  * Narzędzie kryptograficzne implementujące symetryczny szyfr Vigenère'a.
  * Algorytm przetwarza wyłącznie litery alfabetu łacińskiego (konwertując je na wielkie).
  * Wszelkie znaki specjalne, cyfry oraz spacje pozostają w tekście niezmienione.
+ *
+ * @author Jakub Fus
  */
 
 public class VigenereCipher {

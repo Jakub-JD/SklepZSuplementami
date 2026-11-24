@@ -11,7 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+/**
+ * Serwis zarządzający asortymentem suplementów.
+ * Udostępnia metody filtrowania, wyszukiwania i zliczania produktów
+ * oraz obsługę zapisu i odczytu danych z plików tekstowych.
+ *
+ * @author Jakub Fus
+ * @author Jakub Gwozdowski
+ */
 public class SupplementStore {
 
     private List<Supplement> inventory;
