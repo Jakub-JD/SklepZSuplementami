@@ -15,7 +15,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "users")
-@Data
+@Data // zastepuje kilka adnotacji loomback get/set/tostring/reqArgConstructor
 public class User {
 
     @Id

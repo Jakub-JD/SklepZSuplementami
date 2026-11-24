@@ -10,7 +10,7 @@ import java.util.List;
  * Klasa kontrolera REST dla encji Supplement w domenie systemu.
  *
  * Udostępnia interfejs sieciowy API (pod adresem /api/supplements)
- * do obsługioperacji CRUD.
+ * do obsługi operacji CRUD.
  *
  * @author Jakub Fus
  */

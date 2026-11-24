@@ -25,7 +25,7 @@ public class UserController {
     }
 
     /**
-     * @ obiekt użytkownika przekazany w ciele żądania (JSON)
+     * @parm user obiekt użytkownika przekazany w ciele żądania (JSON)
      * @return komunikat o pomyślnej rejestracji
      * @throws IllegalArgumentException jeśli przesyłane dane są niekompletne
      */
