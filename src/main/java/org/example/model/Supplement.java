@@ -49,9 +49,6 @@ public class Supplement {
         return new SupplementDTO(this.name, this.category, this.price);
     }
 
-    /**
-     * @throws IllegalArgumentException gdy parametr dto jest wartością null
-     */
     public void updateFromDTO(SupplementDTO dto) {
         if (dto == null) {
             throw new IllegalArgumentException("Nie można zaktualizować danych suplementu: przekazany obiekt SupplementDTO jest nullem.");

@@ -47,9 +47,6 @@ public class Customer {
         return new CustomerDTO(this.firstName, this.lastName, this.email);
     }
 
-    /**
-     * @throws IllegalArgumentException gdy parametr dto jest wartością null
-     */
     public void updateFromDTO(CustomerDTO dto) {
 
         if (dto == null) {

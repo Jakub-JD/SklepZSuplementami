@@ -44,9 +44,6 @@ public class Order {
         return new OrderDTO(this.orderNumber, this.totalAmount);
     }
 
-    /**
-     * @throws IllegalArgumentException gdy parametr dto jest wartością null
-     */
     public void updateFromDTO(OrderDTO dto) {
         if (dto == null) {
             throw new IllegalArgumentException("Nie można zaktualizować danych zamówienia: przekazany obiekt OrderDTO jest nullem.");

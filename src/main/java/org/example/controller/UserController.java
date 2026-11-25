@@ -24,11 +24,6 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    /**
-     * @parm user obiekt użytkownika przekazany w ciele żądania (JSON)
-     * @return komunikat o pomyślnej rejestracji
-     * @throws IllegalArgumentException jeśli przesyłane dane są niekompletne
-     */
     @PostMapping("/register")
     public String registerUser(@RequestBody User user) {
         String hashedPassword = passwordEncoder.encode(user.getPasswordHash());

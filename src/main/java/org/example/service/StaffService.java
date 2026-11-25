@@ -19,9 +19,6 @@ public class StaffService {
         this.staffRepository = staffRepository;
     }
 
-    /**
-     * Zwraca pracowników pogrupowanych według zakładów i posortowanych alfabetycznie.
-     */
     public Map<String, List<StaffMember>> getStaffGroupedAndSorted() {
         List<StaffMember> allStaff = staffRepository.fetchStaffMembers();
         return allStaff.stream()
@@ -32,9 +29,6 @@ public class StaffService {
                 ));
     }
 
-    /**
-     * Zwraca pracowników posiadających stopień dr lub dr inż., posortowanych alfabetycznie.
-     */
     public Map<String, List<StaffMember>> getDoctorsGroupedAndSorted() {
         List<StaffMember> allStaff = staffRepository.fetchStaffMembers();
         return allStaff.stream()

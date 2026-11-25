@@ -17,15 +17,11 @@ public class VigenereCipherTest {
 
     @Test
     public void shouldEncryptTextCorrectly() {
-        // Podstawowy test matematyki szyfru:
-        // A(0)+A(0)=A, B(1)+B(1)=C(2), C(2)+C(2)=E(4)
         Assertions.assertEquals("ACE", VigenereCipher.encrypt("ABC", "ABC"));
     }
 
     @Test
     public void shouldDecryptTextCorrectly() {
-        // Podstawowy test matematyki szyfru:
-        // A(0)-A(0)=A, C(2)-B(1)=B(1), E(4)-C(2)=C(2)
         Assertions.assertEquals("ABC", VigenereCipher.decrypt("ACE", "ABC"));
     }
 

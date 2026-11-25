@@ -29,10 +29,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * Łączy mechanizm logowania Spring Security z bazą danych PostgreSQL.
-     * Wyszukuje użytkownika po loginie i przekazuje jego dane uwierzytelniające systemowi (Auth Basic).
-     */
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> userRepository.findByUsername(username)
@@ -44,14 +40,10 @@ public class SecurityConfig {
                 .orElseThrow(() -> new UsernameNotFoundException("Nie znaleziono użytkownika: " + username));
     }
 
-    /**
-     * Konfiguruje reguły dostępu HTTP dla poszczególnych ścieżek w aplikacji (Autoryzacja).
-     * Określa, które endpointy są publiczne, a które wymagają konkretnych ról.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Wyłączone na potrzeby testów API
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers("/api/supplements/**").hasAnyRole("USER", "ADMIN")

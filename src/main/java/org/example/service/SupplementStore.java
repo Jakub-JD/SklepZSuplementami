@@ -33,9 +33,6 @@ public class SupplementStore {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * @return mapa z produktem jako kluczem i liczbą wystąpień jako wartością
-     */
     public Map<Supplement, Long> getSalesCount(List<Supplement> items) {
         if (items == null) {
             return Map.of();
